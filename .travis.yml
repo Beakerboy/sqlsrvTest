@@ -1,0 +1,34 @@
+os: linux
+arch: arm64-graviton2
+language: php
+env:
+  global:
+    - DRUPAL_VERSION=7.x
+  jobs:
+    - TESTS=Actions,AJAX,Book,Bootstrap,Cache,Color,Comment,Contextual,Dashboard,DBLog,File,Filter,Forum,Help,Locale,Mail
+    - TESTS=Pager,Path,PHP,Poll,RDF,Session,Shortcut,Syslog,Trigger,XML-RPC
+    - TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,Search,Statistics
+    - TESTS=SimpleTest,System,Taxonomy,Theme,Tracker
+    - TESTS=Translation,Update,User
+#   - TESTS_WITH_SPACES="Entity API,Batch API,Field API,Field types,Field UI,File API,File API (remote),Form API,Path API"
+matrix:
+  allow_failures:
+    - env: TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,Search,Statistics
+    - env: TESTS=SimpleTest,System,Taxonomy,Theme,Tracker
+    - env: TESTS=Translation,Update,User
+php:
+  - '7.4'
+before_install:
+  - cd ..
+  - git clone https://git.drupalcode.org/project/DrupalSqlSrvCI.git DrupalCI
+  - git clone https://git.drupalcode.org/project/sqlsrv.git -b 7.x-2.x sqlsrv
+install:
+  - bash DrupalCI/src/travis/install.sh
+  - export PATH="/opt/mssql-tools/bin:$PATH"
+before_script:
+  - bash DrupalCI/src/travis/build.sh
+  - cd drupal-project
+  - wget https://git.
+  - phpenv config-add ../sqlsrv/dev/travis/travis-7.x.ini
+script:
+  - php ./scripts/run-tests.sh --verbose --fail-only --php `which php` $TESTS
