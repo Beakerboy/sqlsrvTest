@@ -28,7 +28,10 @@ install:
 before_script:
   - bash DrupalCI/src/travis/build.sh
   - cd drupal-project
-  - wget https://git.
   - phpenv config-add ../sqlsrv/dev/travis/travis-7.x.ini
+  - rm -rf sites/all/modules/sqlsrv
+  - rm -rf includes/database/sqlsrv
+  - cp -R sqlsrv drupal-project/sites/all/modules/sqlsrv
+  - cp -R sqlsrv/sqlsrv drupal-project/includes/database/sqlsrv
 script:
   - php ./scripts/run-tests.sh --verbose --fail-only --php `which php` $TESTS
