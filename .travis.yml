@@ -7,15 +7,14 @@ env:
   jobs:
     - TESTS=Actions,AJAX,Book,Bootstrap,Cache,Color,Comment,Contextual,Dashboard,DBLog,File,Filter,Forum,Help,Locale,Mail
     - TESTS=Pager,Path,PHP,Poll,RDF,Session,Shortcut,Syslog,Trigger,XML-RPC
-    - TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,Search,Statistics
-    - TESTS=SimpleTest,System,Taxonomy,Theme,Tracker
-    - TESTS=Translation,Update,User
-#   - TESTS_WITH_SPACES="Entity API,Batch API,Field API,Field types,Field UI,File API,File API (remote),Form API,Path API"
+    - TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,Search
+    - TESTS=Statistics,SimpleTest,System,Taxonomy,Theme
+    - TESTS=Tracker,Translation,Update,User TESTS_WITH_SPACES="Entity API,Batch API,Field API,Field types,Field UI,File API,File API (remote),Form API,Path API"
 matrix:
   allow_failures:
-    - env: TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,Search,Statistics
-    - env: TESTS=SimpleTest,System,Taxonomy,Theme,Tracker
-    - env: TESTS=Translation,Update,User
+    - env: TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,Search
+    - env: TESTS=Statistics,SimpleTest,System,Taxonomy,Theme
+    - env: TESTS=Translation,Update,User TESTS_WITH_SPACES="Entity API,Batch API,Field API,Field types,Field UI,File API,File API (remote),Form API,Path API"
 php:
   - '7.4'
 before_install:
@@ -33,5 +32,6 @@ before_script:
   - rm -rf includes/database/sqlsrv
   - cp -R ../sqlsrv sites/all/modules/sqlsrv
   - cp -R ../sqlsrv/sqlsrv includes/database/sqlsrv
+  - echo $TESTS_WITH_SPACES
 script:
   - php ./scripts/run-tests.sh --verbose --fail-only --php `which php` $TESTS
