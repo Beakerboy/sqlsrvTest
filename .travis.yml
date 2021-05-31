@@ -34,4 +34,4 @@ before_script:
   - cp -R ../sqlsrv/sqlsrv includes/database/sqlsrv
   - echo $TESTS
 script:
-  - php ./scripts/run-tests.sh --verbose --fail-only --php `which php` Tracker,Translation,Update,User,"Entity API"
+  - php ./scripts/run-tests.sh --verbose --fail-only --php `which php` "$TESTS"
