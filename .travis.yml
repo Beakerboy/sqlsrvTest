@@ -5,17 +5,17 @@ env:
   global:
     - DRUPAL_VERSION=7.x
   jobs:
-    #- TESTS=Actions,AJAX,Book,Bootstrap,Cache,Color,Comment,Contextual,Dashboard,DBLog,File,Filter,Forum,Help,Locale,Mail
-    #- TESTS=Pager,Path,PHP,Poll,RDF,Session,Shortcut,Syslog,Trigger,XML-RPC
-    #- TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,Search
-    #- TESTS=Statistics,SimpleTest,System,Taxonomy,Theme
-    - TESTS="Tracker,Translation,Update,User,Entity API,Batch API"
+    - TESTS="Actions,AJAX,Batch API,Book,Bootstrap,Cache,Color,Comment,Contextual,Dashboard,DBLog, ,Entity API,File,Filter,Forum,Help,Locale,Mail"
+    - TESTS=Pager,Path,PHP,Poll,RDF,Session,Shortcut,Syslog,Tracker,Translation,Trigger,XML-RPC
+    - TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,Search
+    - TESTS=Statistics,SimpleTest,System,Taxonomy,Theme
+    - TESTS=Update,User
     - TESTS="Field API,Field types,Field UI,File API,File API (remote),Form API,Path API"
 matrix:
   allow_failures:
     - env: TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,Search
     - env: TESTS=Statistics,SimpleTest,System,Taxonomy,Theme
-    - env: TESTS="Tracker,Translation,Update,User,\"Entity API\"" TESTS_WITH_SPACES="\"Entity API\",\"Batch API\",Field API,Field types,Field UI,File API,File API (remote),Form API,Path API"
+    - env: TESTS=Update,User
 php:
   - '7.4'
 before_install:
@@ -33,6 +33,5 @@ before_script:
   - rm -rf includes/database/sqlsrv
   - cp -R ../sqlsrv sites/all/modules/sqlsrv
   - cp -R ../sqlsrv/sqlsrv includes/database/sqlsrv
-  - echo $TESTS
 script:
   - php ./scripts/run-tests.sh --verbose --fail-only --php `which php` "$TESTS"
