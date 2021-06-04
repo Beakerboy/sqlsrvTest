@@ -5,14 +5,15 @@ env:
   global:
     - DRUPAL_VERSION=7.x
   jobs:
-    - TESTS="Actions,AJAX,Batch API,Book,Bootstrap,Cache,Color,Comment,Contextual,Dashboard,DBLog,Entity API,Field API,Field types,Field UI,File,File API,File API (remote),Filter,Form API,Forum,Help,Locale,Mail,Pager,Path,Path API,PHP"
-    - TESTS="Poll,RDF,Session,Shortcut,Syslog,Tracker,Translation,Trigger,XML-RPC"
-    - TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node
-    - TESTS=Search,Statistics,SimpleTest,System,Taxonomy,Theme,Update,User
+    - TESTS="Actions,AJAX,Batch API,Book,Bootstrap,Cache,Color,Comment,Contextual,Dashboard,DBLog,Entity API,Field API,Field types,Field UI"
+    - TESTS="File,File API,File API (remote),Filter,Form API,Forum,Help,Locale,Mail,Pager,Path,Path API,PHP,Poll,RDF,Session,Shortcut,Syslog"
+    - TESTS="Tracker,Translation,Trigger,XML-RPC"
+    - TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,User
+    - TESTS=Search,Statistics,SimpleTest,System,Taxonomy,Theme,Update
 matrix:
   allow_failures:
-    - env: TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node
-    - env: TESTS=Search,Statistics,SimpleTest,System,Taxonomy,Theme,Update,User
+    - env: TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,User
+    - env: TESTS=Search,Statistics,SimpleTest,System,Taxonomy,Theme,Update
 php:
   - '7.4'
 before_install:
