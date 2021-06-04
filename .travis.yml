@@ -6,14 +6,14 @@ env:
     - DRUPAL_VERSION=7.x
   jobs:
     - TESTS="Actions,AJAX,Batch API,Book,Bootstrap,Cache,Color,Comment,Contextual,Dashboard,DBLog,Entity API,Field API,Field types,Field UI"
-    - TESTS="File,File API,File API (remote),Filter,Form API,Forum,Help,Locale,Mail,Pager,Path,Path API,PHP,Poll,RDF,Session,Shortcut,Syslog"
-    - TESTS="Tracker,Translation,Trigger,XML-RPC"
-    - TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,User
-    - TESTS=Search,Statistics,SimpleTest,System,Taxonomy,Theme,Update
+    - TESTS="File,File API,File API (remote),Filter,Form API,Forum,Help,Locale,Mail,Pager,Path,Path API,PHP"
+    - TESTS="Node,Poll,RDF,Session,Shortcut,Syslog,Taxonomy,Theme,Tracker,Translation,Trigger,XML-RPC"
+    - TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu
+    - TESTS=Search,Statistics,SimpleTest,System,Update,User
 matrix:
   allow_failures:
-    - env: TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,User
-    - env: TESTS=Search,Statistics,SimpleTest,System,Taxonomy,Theme,Update
+    - env: TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu
+    - env: TESTS=Search,Statistics,SimpleTest,System,Update,User
 php:
   - '7.4'
 before_install:
@@ -32,4 +32,4 @@ before_script:
   #- cp -R ../sqlsrv sites/all/modules/sqlsrv
   #- cp -R ../sqlsrv/sqlsrv includes/database/sqlsrv
 script:
-  - php ./scripts/run-tests.sh --concurrency 3 --verbose --fail-only --php `which php` "$TESTS"
+  - php ./scripts/run-tests.sh --concurrency 3 --php `which php` "$TESTS"
