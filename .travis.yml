@@ -5,24 +5,19 @@ env:
   global:
     - DRUPAL_VERSION=7.x
   jobs:
-    - TESTS="Actions,AJAX,Batch API,Book,Bootstrap,Cache,Color,Comment,Contextual,Dashboard,DBLog,Entity API,File,Filter,Forum,Help,Locale,Mail"
-    - TESTS=Pager,Path,PHP,Poll,RDF,Session,Shortcut,Syslog,Tracker,Translation,Trigger,XML-RPC
-    - TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,Search
-    - TESTS=Statistics,SimpleTest,System,Taxonomy,Theme
-    - TESTS=Update,User
-    - TESTS="Field API,Field types,Field UI,File API,File API (remote)"
-    - TESTS="Form API,Path API"
+    - TESTS="Actions,AJAX,Batch API,Book,Bootstrap,Cache,Color,Comment,Contextual,Dashboard,DBLog,Entity API,File,Filter,Forum,Help,Locale,Mail,Pager,Path,PHP,Poll,RDF,Session,Shortcut,Syslog,Tracker,Translation,Trigger,XML-RPC"
+    - TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,Search,Statistics,SimpleTest,System,Taxonomy,Theme,Update,User
+    - TESTS="Field API,Field types,Field UI,File API,File API (remote),Form API,Path API"
 matrix:
   allow_failures:
-    - env: TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,Search
-    - env: TESTS=Statistics,SimpleTest,System,Taxonomy,Theme
-    - env: TESTS=Update,User
+    - env: TESTS=Aggregator,Block,Contact,Database,Image,OpenID,Menu,Node,Search,Statistics,SimpleTest,System,Taxonomy,Theme,Update,User
+    - env: TESTS="Field API,Field types,Field UI,File API,File API (remote),Form API,Path API"
 php:
   - '7.4'
 before_install:
   - cd ..
   - git clone https://git.drupalcode.org/project/DrupalSqlSrvCI.git DrupalCI
-  - git clone https://git.drupalcode.org/issue/sqlsrv-3215864.git -b 7.x-2.x sqlsrv
+  #- git clone https://git.drupalcode.org/project/sqlsrv.git -b 7.x-2.x sqlsrv
 install:
   - bash DrupalCI/src/travis/install.sh
   - export PATH="/opt/mssql-tools/bin:$PATH"
@@ -30,9 +25,9 @@ before_script:
   - bash DrupalCI/src/travis/build.sh
   - cd drupal-project
  # - phpenv config-add ../sqlsrv/dev/travis/travis-7.x.ini
-  - rm -rf sites/all/modules/sqlsrv
-  - rm -rf includes/database/sqlsrv
-  - cp -R ../sqlsrv sites/all/modules/sqlsrv
-  - cp -R ../sqlsrv/sqlsrv includes/database/sqlsrv
+  #- rm -rf sites/all/modules/sqlsrv
+  #- rm -rf includes/database/sqlsrv
+  #- cp -R ../sqlsrv sites/all/modules/sqlsrv
+  #- cp -R ../sqlsrv/sqlsrv includes/database/sqlsrv
 script:
-  - php ./scripts/run-tests.sh --verbose --fail-only --php `which php` "$TESTS"
+  - php ./scripts/run-tests.sh --concurrency 3 --verbose --fail-only --php `which php` "$TESTS"
