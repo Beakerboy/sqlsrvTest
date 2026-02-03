@@ -24,7 +24,7 @@ jobs:
         # sudo apt-get install -y -qq postfix apache2 libapache2-mod-fastcgi
         sudo apt-get install -y -qq postfix apache2
         sudo ACCEPT_EULA=Y apt-get install -y -qq mssql-server unixodbc-dev
-        sudo ACCEPT_EULA=Y apt-get install -y mssql-tools
+        sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18
         # Remove Xdebug for speed
         # phpenv config-rm xdebug.ini
         # Update pecl
