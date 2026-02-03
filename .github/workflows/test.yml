@@ -29,6 +29,7 @@ jobs:
         # phpenv config-rm xdebug.ini
         # Update pecl
         pecl channel-update pecl.php.net
+        echo "/opt/mssql-tools/bin" >> $GITHUB_PATH
     - name: Install server
       run: |
         # Install SQL Server
