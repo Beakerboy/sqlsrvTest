@@ -21,7 +21,7 @@ jobs:
         # removed mssql-tools 
         sudo ACCEPT_EULA=Y apt-get install -y -qq mssql-server unixodbc-dev
         # Remove Xdebug for speed
-        phpenv config-rm xdebug.ini
+        # phpenv config-rm xdebug.ini
         # Update pecl
         pecl channel-update pecl.php.net
     - name: Install server
