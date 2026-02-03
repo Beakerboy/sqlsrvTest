@@ -44,7 +44,7 @@ jobs:
         sqlcmd -P Password12! -S localhost -U SA -d mydrupalsite -C -Q "CREATE FUNCTION dbo.REGEXP(@pattern NVARCHAR(100), @matchString NVARCHAR(100)) RETURNS bit EXTERNAL NAME Regex.RegExCompiled.RegExCompiledMatch"
         # Download Drupal components
         export COMPOSER_MEMORY_LIMIT=-1
-        git clone https://git.drupalcode.org/project/drupal.git -b 10.x drupal-project
+        git clone https://git.drupalcode.org/project/drupal.git -b 10.6.x drupal-project
         cd drupal-project
         composer require drush/drush:13.7.1
         composer require drupal/sqlsrv:^5.0
