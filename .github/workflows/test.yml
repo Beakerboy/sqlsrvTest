@@ -8,8 +8,8 @@ jobs:
     - name: Install modules
       run: |
         # Download SQL Server, postfix and apache.
-        sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/16.04/mssql-server-2019.list)"
-        sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/16.04/prod.list)"
+        sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/24.04/mssql-server-2025.list)"
+        sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/24.04/prod.list)"
         wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
         sudo apt-get update -qq
         sudo apt-get install -y -qq postfix apache2 libapache2-mod-fastcgi
