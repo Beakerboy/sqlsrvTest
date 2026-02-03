@@ -27,10 +27,10 @@ jobs:
     - name: Install server
       run: |
         # Install SQL Server
-        export MSSQL_SA_PASSWORD=Password12!
-        export ACCEPT_EULA=Y
-        export MSSQL_PID=Evaluation
-        export SIMPLETEST_BASE_URL=http://127.0.0.1
+        MSSQL_SA_PASSWORD=Password12!
+        ACCEPT_EULA=Y
+        MSSQL_PID=Evaluation
+        SIMPLETEST_BASE_URL=http://127.0.0.1
         sudo /opt/mssql/bin/mssql-conf setup
         sleep 15
         # add binary to path.
