@@ -48,3 +48,4 @@ jobs:
         git clone https://git.drupalcode.org/project/sqlsrv.git -b 5.0.x sqlsrv_drupalci
         cd drupal-project
         composer require drush/drush:13.7.1
+        vendor/bin/drush si standard -y --db-url=sqlsrv://sa:Password12!@localhost/mydrupalsite --clean-url=0 --account-name=admin --account-pass=drupal
