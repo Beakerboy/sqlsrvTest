@@ -8,10 +8,10 @@ jobs:
     - name: Add repos
       run: |
         # Download SQL Server, postfix and apache.
-        sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/24.04/mssql-server-2025.list)"
-        sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/24.04/prod.list)"
         curl -fsSL https://packages.microsoft.com/keys/microsoft.asc
         sudo gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+        sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/24.04/mssql-server-2025.list)"
+        sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/24.04/prod.list)"
     - name: Install modules
       run: |
         sudo apt-get update -qq
