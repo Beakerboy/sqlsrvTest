@@ -5,13 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Install modules
+    - name: Add repos
       run: |
         # Download SQL Server, postfix and apache.
         sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/24.04/mssql-server-2025.list)"
         sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/24.04/prod.list)"
         curl -fsSL https://packages.microsoft.com/keys/microsoft.asc
         sudo gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+    - name: Install modules
+      run: |
         sudo apt-get update -qq
         sudo apt-get install -y -qq postfix apache2 libapache2-mod-fastcgi
         sudo ACCEPT_EULA=Y apt-get install -y -qq mssql-server mssql-tools unixodbc-dev
@@ -19,7 +21,7 @@ jobs:
         phpenv config-rm xdebug.ini
         # Update pecl
         pecl channel-update pecl.php.net
-    - name: Install modules
+    - name: Install server
       run: |
         # Install SQL Server
         export MSSQL_SA_PASSWORD=Password12!
