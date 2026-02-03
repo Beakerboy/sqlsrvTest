@@ -35,7 +35,7 @@ jobs:
         sudo ACCEPT_EULA='Y' MSSQL_PID='Evaluation' MSSQL_SA_PASSWORD='Password12!' /opt/mssql/bin/mssql-conf setup
         sleep 15
         # "CREATE DATABASE mydrupalsite COLLATE LATIN1_GENERAL_100_CI_AS_SC_UTF8"
-        sqlcmd -P Password12! -S localhost -U SA -Q -C "CREATE DATABASE mydrupalsite"
+        sqlcmd -P Password12! -S localhost -U SA -C -Q "CREATE DATABASE mydrupalsite"
         pecl install sqlsrv pdo_sqlsrv
         # Install REGEX CLR
         wget https://github.com/Beakerboy/drupal-sqlsrv-regex/releases/download/1.0/RegEx.dll
