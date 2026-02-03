@@ -29,14 +29,13 @@ jobs:
         # Update pecl
         pecl channel-update pecl.php.net
         echo "/opt/mssql-tools18/bin" >> $GITHUB_PATH
-        sudo cp my.crt /usr/local/share/ca-certificates/
-        sudo update-ca-certificates
     - name: Install server
       run: |
         # Install SQL Server
         sudo ACCEPT_EULA='Y' MSSQL_PID='Evaluation' MSSQL_SA_PASSWORD='Password12!' /opt/mssql/bin/mssql-conf setup
         sleep 15
-        sqlcmd -P Password12! -S localhost -U SA -Q "CREATE DATABASE mydrupalsite COLLATE LATIN1_GENERAL_100_CI_AS_SC_UTF8"
+        # "CREATE DATABASE mydrupalsite COLLATE LATIN1_GENERAL_100_CI_AS_SC_UTF8"
+        sqlcmd -P Password12! -S localhost -U SA -Q -C "CREATE DATABASE mydrupalsite"
         pecl install sqlsrv pdo_sqlsrv
         # Install REGEX CLR
         wget https://github.com/Beakerboy/drupal-sqlsrv-regex/releases/download/1.0/RegEx.dll
