@@ -14,7 +14,8 @@ jobs:
     - name: Install modules
       run: |
         sudo apt-get update -qq
-        sudo apt-get install -y -qq postfix apache2 libapache2-mod-fastcgi
+        # sudo apt-get install -y -qq postfix apache2 libapache2-mod-fastcgi
+        sudo apt-get install -y -qq postfix apache2
         sudo ACCEPT_EULA=Y apt-get install -y -qq mssql-server mssql-tools unixodbc-dev
         # Remove Xdebug for speed
         phpenv config-rm xdebug.ini
