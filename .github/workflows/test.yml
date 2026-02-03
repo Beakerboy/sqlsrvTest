@@ -1,5 +1,10 @@
 name: CI
 on: [push, pull_request]
+env:
+  MSSQL_SA_PASSWORD: 'Password12!'
+  ACCEPT_EULA: 'Y'
+  MSSQL_PID: 'Evaluation'
+  SIMPLETEST_BASE_URL: 'http://127.0.0.1'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,10 +32,6 @@ jobs:
     - name: Install server
       run: |
         # Install SQL Server
-        MSSQL_SA_PASSWORD=Password12!
-        ACCEPT_EULA=Y
-        MSSQL_PID=Evaluation
-        SIMPLETEST_BASE_URL=http://127.0.0.1
         sudo /opt/mssql/bin/mssql-conf setup
         sleep 15
         # add binary to path.
