@@ -18,6 +18,8 @@ jobs:
         phpenv config-rm xdebug.ini
         # Update pecl
         pecl channel-update pecl.php.net
+    - name: Install modules
+      run: |
         # Install SQL Server
         export MSSQL_SA_PASSWORD=Password12!
         export ACCEPT_EULA=Y
