@@ -10,7 +10,10 @@ jobs:
         # Download SQL Server, postfix and apache.
         curl -sSL -O https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb
         sudo dpkg -i packages-microsoft-prod.deb
+        curl -sSL -O https://packages.microsoft.com/config/ubuntu/24.04/mssql-server-2025.list
+        sudo dpkg -i mssql-server-2025.list
         rm packages-microsoft-prod.deb
+        rm mssql-server-2025.list
     - name: Install modules
       run: |
         sudo apt-get update -qq
