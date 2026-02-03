@@ -7,7 +7,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Install modules
       run: |
-        # Download SQL Server, postfix and apache
+        # Download SQL Server, postfix and apache.
         sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/16.04/mssql-server-2019.list)"
         sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/16.04/prod.list)"
         wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
