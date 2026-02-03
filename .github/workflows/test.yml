@@ -32,7 +32,7 @@ jobs:
     - name: Install server
       run: |
         # Install SQL Server
-        sudo /opt/mssql/bin/mssql-conf setup
+        sudo ACCEPT_EULA='Y' MSSQL_PID='Evaluation' MSSQL_SA_PASSWORD='Password12!' /opt/mssql/bin/mssql-conf setup
         sleep 15
         # add binary to path.
         export PATH="/opt/mssql-tools/bin:$PATH"
