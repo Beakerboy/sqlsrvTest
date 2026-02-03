@@ -29,6 +29,7 @@ jobs:
         # Update pecl
         pecl channel-update pecl.php.net
         echo "/opt/mssql-tools18/bin" >> $GITHUB_PATH
+        certutil -addstore -f "Root" selfsignedcert.cer
     - name: Install server
       run: |
         # Install SQL Server
