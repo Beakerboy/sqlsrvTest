@@ -23,8 +23,7 @@ jobs:
         sudo apt-get update -qq
         # sudo apt-get install -y -qq postfix apache2 libapache2-mod-fastcgi
         sudo apt-get install -y -qq postfix apache2
-        sudo ACCEPT_EULA=Y apt-get install -y -qq mssql-server unixodbc-dev
-        sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18
+        sudo ACCEPT_EULA=Y apt-get install -y -qq mssql-server mssql-tools18 unixodbc-dev
         # Remove Xdebug for speed
         # phpenv config-rm xdebug.ini
         # Update pecl
@@ -35,7 +34,8 @@ jobs:
         # Install SQL Server
         sudo ACCEPT_EULA='Y' MSSQL_PID='Evaluation' MSSQL_SA_PASSWORD='Password12!' /opt/mssql/bin/mssql-conf setup
         sleep 15
-        /opt/mssql-tools/bin/sqlcmd -P Password12! -S localhost -U SA -Q "CREATE DATABASE mydrupalsite COLLATE LATIN1_GENERAL_100_CI_AS_SC_UTF8"
+        ls -al /opt/
+        /opt/mssql-tools18/bin/sqlcmd -P Password12! -S localhost -U SA -Q "CREATE DATABASE mydrupalsite COLLATE LATIN1_GENERAL_100_CI_AS_SC_UTF8"
         pecl install sqlsrv pdo_sqlsrv
         # Install REGEX CLR
         wget https://github.com/Beakerboy/drupal-sqlsrv-regex/releases/download/1.0/RegEx.dll
