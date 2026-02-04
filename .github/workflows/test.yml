@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - name: remove mysql
+      run: |
+        sudo systemctl stop mysql
+        sudo apt-get purge mysql-server mysql-client mysql-common mysql-server-core-*mysql-client-core-*
+        sudo apt-get autoremove -y
+        sudo apt-get autoclean
     - name: Add repos
       run: |
         # Download SQL Server, postfix and apache.
