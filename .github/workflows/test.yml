@@ -58,4 +58,4 @@ jobs:
         cd drupal-project
         composer require drush/drush:12.5.2
         composer require drupal/sqlsrv:^5.0
-        sudo vendor/bin/drush si standard -y --db-url=sqlsrv://sa:Password12!@localhost:1434/mydrupalsite --account-name=admin --account-pass=drupal --db-su=SA --db-su-pw=Password12!
+        sudo vendor/bin/drush si standard -y --db-url=sqlsrv://sa:Password12!@localhost:1434/mydrupalsite?module=sqlsrv --account-name=admin --account-pass=drupal --db-su=SA --db-su-pw=Password12!
