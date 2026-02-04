@@ -5,39 +5,52 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Install modules
+    - name: remove mysql
+      run: |
+        sudo systemctl stop mysql
+        sudo apt-get purge mysql-server mysql-client mysql-common mysql-server-core-* mysql-client-core-*
+        sudo apt-get autoremove -y
+        sudo apt-get autoclean
+        sudo rm -rf /etc/mysql
+        sudo rm -rf /var/lib/mysql
+        sudo rm -rf /var/log/mysql*
+    - name: Add repos
       run: |
         # Download SQL Server, postfix and apache.
-        sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/16.04/mssql-server-2019.list)"
-        sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/16.04/prod.list)"
-        wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+        curl -sSL -O https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb
+        sudo dpkg -i packages-microsoft-prod.deb
+        sudo add-apt-repository "deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/ubuntu/24.04/mssql-server-2025 noble main"
+        sudo add-apt-repository "deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/ubuntu/24.04/prod noble main"
+        rm packages-microsoft-prod.deb
+    - name: Install modules
+      run: |
         sudo apt-get update -qq
-        sudo apt-get install -y -qq postfix apache2 libapache2-mod-fastcgi
-        sudo ACCEPT_EULA=Y apt-get install -y -qq mssql-server mssql-tools unixodbc-dev
+        # sudo apt-get install -y -qq postfix apache2 libapache2-mod-fastcgi
+        sudo apt-get install -y -qq postfix apache2
+        sudo ACCEPT_EULA=Y apt-get install -y -qq mssql-server mssql-tools18 unixodbc-dev
         # Remove Xdebug for speed
-        phpenv config-rm xdebug.ini
+        # phpenv config-rm xdebug.ini
         # Update pecl
         pecl channel-update pecl.php.net
+        echo "/opt/mssql-tools18/bin" >> $GITHUB_PATH
+    - name: Install server
+      run: |
         # Install SQL Server
-        export MSSQL_SA_PASSWORD=Password12!
-        export ACCEPT_EULA=Y
-        export MSSQL_PID=Evaluation
-        export SIMPLETEST_BASE_URL=http://127.0.0.1
-        sudo /opt/mssql/bin/mssql-conf setup
+        sudo ACCEPT_EULA='Y' MSSQL_PID='Evaluation' MSSQL_SA_PASSWORD='Password12!' /opt/mssql/bin/mssql-conf setup
         sleep 15
-        # add binary to path.
-        export PATH="/opt/mssql-tools/bin:$PATH"
-        sqlcmd -P Password12! -S localhost -U SA -Q "CREATE DATABASE mydrupalsite COLLATE LATIN1_GENERAL_100_CI_AS_SC_UTF8"
-        pecl install sqlsrv pdo_sqlsrv
+        sqlcmd -P Password12! -S localhost -U SA -C -Q "CREATE DATABASE mydrupalsite COLLATE LATIN1_GENERAL_100_CI_AS_SC_UTF8"
+        sudo pecl install sqlsrv pdo_sqlsrv
         # Install REGEX CLR
         wget https://github.com/Beakerboy/drupal-sqlsrv-regex/releases/download/1.0/RegEx.dll
         sudo mv RegEx.dll /var/opt/mssql/data/
-        sqlcmd -P Password12! -S localhost -U SA -d mydrupalsite -Q "EXEC sp_configure 'show advanced options', 1; RECONFIGURE; EXEC sp_configure 'clr strict security', 0; RECONFIGURE; EXEC sp_configure 'clr enable', 1; RECONFIGURE"
-        sqlcmd -P Password12! -S localhost -U SA -d mydrupalsite -Q "CREATE ASSEMBLY Regex from '/var/opt/mssql/data/RegEx.dll' WITH PERMISSION_SET = SAFE"
-        sqlcmd -P Password12! -S localhost -U SA -d mydrupalsite -Q "CREATE FUNCTION dbo.REGEXP(@pattern NVARCHAR(100), @matchString NVARCHAR(100)) RETURNS bit EXTERNAL NAME Regex.RegExCompiled.RegExCompiledMatch"
+        sqlcmd -P Password12! -S localhost -U SA -d mydrupalsite -C -Q "EXEC sp_configure 'show advanced options', 1; RECONFIGURE; EXEC sp_configure 'clr strict security', 0; RECONFIGURE; EXEC sp_configure 'clr enable', 1; RECONFIGURE"
+        sqlcmd -P Password12! -S localhost -U SA -d mydrupalsite -C -Q "CREATE ASSEMBLY Regex from '/var/opt/mssql/data/RegEx.dll' WITH PERMISSION_SET = SAFE"
+        sqlcmd -P Password12! -S localhost -U SA -d mydrupalsite -C -Q "CREATE FUNCTION dbo.REGEXP(@pattern NVARCHAR(100), @matchString NVARCHAR(100)) RETURNS bit EXTERNAL NAME Regex.RegExCompiled.RegExCompiledMatch"
+        sqlcmd -P Password12! -S localhost -U SA -d mydrupalsite -C -Q "RECONFIGURE WITH OVERRIDE"
         # Download Drupal components
         export COMPOSER_MEMORY_LIMIT=-1
-        git clone https://git.drupalcode.org/project/drupal.git -b 11.x drupal-project
-        git clone https://git.drupalcode.org/project/sqlsrv.git -b 5.0.x sqlsrv_drupalci
+        git clone https://git.drupalcode.org/project/drupal.git -b 10.6.x drupal-project
         cd drupal-project
-        composer require drush/drush:13.7.1
+        composer require drush/drush:12.5.2
+        composer require drupal/sqlsrv:^5.0
+        sudo vendor/bin/drush si standard -y --db-url=sqlsrv://sa:Password12!@localhost:1434/mydrupalsite?module=sqlsrv --account-name=admin --account-pass=drupal --db-su=SA --db-su-pw=Password12!
