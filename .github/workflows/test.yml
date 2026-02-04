@@ -51,6 +51,7 @@ jobs:
         sqlcmd -P Password12! -S localhost -U SA -d mydrupalsite -C -Q "EXEC sp_configure 'show advanced options', 1; RECONFIGURE; EXEC sp_configure 'clr strict security', 0; RECONFIGURE; EXEC sp_configure 'clr enable', 1; RECONFIGURE"
         sqlcmd -P Password12! -S localhost -U SA -d mydrupalsite -C -Q "CREATE ASSEMBLY Regex from '/var/opt/mssql/data/RegEx.dll' WITH PERMISSION_SET = SAFE"
         sqlcmd -P Password12! -S localhost -U SA -d mydrupalsite -C -Q "CREATE FUNCTION dbo.REGEXP(@pattern NVARCHAR(100), @matchString NVARCHAR(100)) RETURNS bit EXTERNAL NAME Regex.RegExCompiled.RegExCompiledMatch"
+        sqlcmd -P Password12! -S localhost -U SA -d mydrupalsite -C -Q "RECONFIGURE WITH OVERRIDE"
         # Download Drupal components
         export COMPOSER_MEMORY_LIMIT=-1
         git clone https://git.drupalcode.org/project/drupal.git -b 10.6.x drupal-project
